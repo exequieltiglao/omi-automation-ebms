@@ -20,7 +20,9 @@
       "@config/*": ["./config/*"],
       "@helpers/*": ["./helpers/*"],
       "@fixtures/*": ["./fixtures/*"],
-      "@tests/*": ["./tests/*"]
+      "@tests/*": ["./tests/*"],
+      "@pages": ["./pages/index.ts"],
+      "@pages/*": ["./pages/*"]
     }
   },
   "include": [
