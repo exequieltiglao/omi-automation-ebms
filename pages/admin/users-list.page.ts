@@ -61,7 +61,7 @@ export class UsersListPage extends BasePage {
     this.createButton = page.getByRole('button', { name: /create/i });
     this.createDropdown = page.locator('[role="menu"], .dropdown-menu').or(page.locator('div:has-text("Create User"):visible'));
     this.createUserOption = page.getByText(/^create user$/i, { exact: false }).or(page.locator('button:has-text("Create User"), a:has-text("Create User")'));
-    this.createPermissionGroupOption = page.getByText(/^create permission group$/i, { exact: false });
+    this.createPermissionGroupOption = page.getByText(/^create permission group$/i,  { exact: false });
     
     // Initialize search and filter locators
     this.searchInput = page.getByPlaceholder(/search by first name, last name or em/i).or(page.locator('input[type="text"]').first());
@@ -80,8 +80,8 @@ export class UsersListPage extends BasePage {
     this.tablePermissionGroupColumn = page.locator('th:has-text("PERMISSION GROUP")');
     this.tableActionColumn = page.locator('th:has-text("ACTION")');
     
-    // Initialize message locators
-    this.successBanner = page.locator('.alert-success, [role="alert"]').or(page.locator('text=/new user has been added/i'));
+    // Initialize message locators (use first() to handle multiple matches)
+    this.successBanner = page.locator('.bg-green-100, .alert-success').first();
     this.goBackLink = page.getByRole('link', { name: /go back/i });
   }
 

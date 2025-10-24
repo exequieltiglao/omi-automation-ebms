@@ -87,13 +87,14 @@ export function generateEmail(firstName?: string, lastName?: string): string {
 }
 
 /**
- * Generates a random Philippine mobile number
- * @returns Random Philippine mobile number in format +639XXXXXXXXX
+ * Generates a random Philippine mobile number (without country code)
+ * @returns Random Philippine mobile number in format 9XXXXXXXXX (10 digits)
  */
 export function generatePhilippineContactNumber(): string {
-  const prefix = '+639';
-  const number = generateRandomNumber(9);
-  return `${prefix}${number}`;
+  // Philippine mobile numbers start with 9 and have 10 digits total
+  const firstDigit = '9';
+  const restDigits = generateRandomNumber(9);
+  return `${firstDigit}${restDigits}`;
 }
 
 /**

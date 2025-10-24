@@ -11,7 +11,6 @@ export class CreateUserPage extends BasePage {
   // Navigation
   private readonly goBackLink: Locator;
   private readonly pageTitle: Locator;
-  private readonly instructionText: Locator;
   
   // Basic Information section
   private readonly basicInfoSection: Locator;
@@ -21,14 +20,14 @@ export class CreateUserPage extends BasePage {
   private readonly lastNameLabel: Locator;
   private readonly emailInput: Locator;
   private readonly emailLabel: Locator;
-  private readonly contactNumberInput: Locator;
+  private readonly countryCodeSelect: Locator;
+  private readonly phoneNumberInput: Locator;
   private readonly contactNumberLabel: Locator;
   
   // Account Information section
   private readonly accountInfoSection: Locator;
   private readonly permissionGroupLabel: Locator;
-  private readonly permissionGroupDropdown: Locator;
-  private readonly permissionGroupOptions: Locator;
+  private readonly permissionGroupSelect: Locator;
   private readonly configurePermissionButton: Locator;
   
   // User Status
@@ -49,37 +48,36 @@ export class CreateUserPage extends BasePage {
     // Initialize navigation locators
     this.goBackLink = page.getByRole('link', { name: /go back to users/i });
     this.pageTitle = page.getByRole('heading', { name: /create user/i });
-    this.instructionText = page.locator('text=/fill in the required.*fields/i');
     
     // Initialize Basic Information locators
     this.basicInfoSection = page.locator('text=BASIC INFORMATION').first();
     this.firstNameLabel = page.locator('label:has-text("First Name")');
-    this.firstNameInput = page.getByLabel(/first name/i).or(page.locator('input[name="firstName"], input[id*="firstName"]')).first();
+    this.firstNameInput = page.locator('input[name="first_name"]').or(page.locator('#first_name'));
     this.lastNameLabel = page.locator('label:has-text("Last Name")');
-    this.lastNameInput = page.getByLabel(/last name/i).or(page.locator('input[name="lastName"], input[id*="lastName"]')).first();
+    this.lastNameInput = page.locator('input[name="last_name"]').or(page.locator('#last_name'));
     this.emailLabel = page.locator('label:has-text("Email Address")');
-    this.emailInput = page.getByLabel(/email address/i).or(page.locator('input[type="email"], input[name="email"]')).first();
+    this.emailInput = page.locator('input[name="email"]').or(page.locator('#email'));
     this.contactNumberLabel = page.locator('label:has-text("Contact Number")');
-    this.contactNumberInput = page.getByLabel(/contact number/i).or(page.locator('input[name="contactNumber"], input[type="tel"]')).first();
+    this.countryCodeSelect = page.locator('select[id="country_code"]');
+    this.phoneNumberInput = page.locator('input[name="phone_number"]').or(page.locator('#phone_number'));
     
     // Initialize Account Information locators
     this.accountInfoSection = page.locator('text=ACCOUNT INFORMATION').first();
-    this.permissionGroupLabel = page.locator('text=Permission Group').or(page.locator('label:has-text("Permission Group")'));
-    this.permissionGroupDropdown = page.locator('select[name="permissionGroup"]').or(page.locator('[role="listbox"]')).or(page.locator('div:has-text("Venue Section Head")').first());
-    this.permissionGroupOptions = page.locator('[role="option"], li, .option');
-    this.configurePermissionButton = page.getByRole('button', { name: /configure permission/i });
+    this.permissionGroupLabel = page.locator('label:has-text("Permission Group")');
+    this.permissionGroupSelect = page.locator('select[id="permission_group"]');
+    this.configurePermissionButton = page.getByRole('link', { name: /configure permission/i });
     
     // Initialize User Status locators
     this.userStatusLabel = page.locator('text=User Status').first();
-    this.activeRadio = page.getByRole('radio', { name: /active/i }).or(page.locator('input[type="radio"][value="Active"]'));
-    this.blockedRadio = page.getByRole('radio', { name: /blocked/i }).or(page.locator('input[type="radio"][value="Blocked"]'));
+    this.activeRadio = page.locator('input[type="radio"][value="active"]');
+    this.blockedRadio = page.locator('input[type="radio"][value="blocked"]');
     
     // Initialize action button locators
     this.cancelButton = page.getByRole('button', { name: /cancel/i });
     this.createButton = page.getByRole('button', { name: /^create$/i }).last();
     
     // Initialize form locator
-    this.form = page.locator('form').first();
+    this.form = page.locator('form[id="createUserForm"]');
   }
 
   /**
@@ -139,12 +137,12 @@ export class CreateUserPage extends BasePage {
 
   /**
    * Fills the contact number field
-   * @param contactNumber - Contact number value
+   * @param contactNumber - Contact number value (without country code)
    */
   async fillContactNumber(contactNumber: string): Promise<void> {
-    await this.waitForElement(this.contactNumberInput);
-    await this.contactNumberInput.clear();
-    await this.contactNumberInput.fill(contactNumber);
+    await this.waitForElement(this.phoneNumberInput);
+    await this.phoneNumberInput.clear();
+    await this.phoneNumberInput.fill(contactNumber);
   }
 
   /**
@@ -168,41 +166,18 @@ export class CreateUserPage extends BasePage {
    * @param permissionGroup - Permission group name
    */
   async selectPermissionGroup(permissionGroup: string): Promise<void> {
-    await this.waitForElement(this.permissionGroupDropdown);
-    
-    // Try different approaches for selecting permission group
-    try {
-      // Approach 1: If it's a select element
-      await this.permissionGroupDropdown.selectOption({ label: permissionGroup });
-    } catch {
-      try {
-        // Approach 2: If it's a custom dropdown
-        await this.permissionGroupDropdown.click();
-        await this.page.waitForTimeout(300);
-        const option = this.page.locator(`text="${permissionGroup}"`).first();
-        await option.click();
-      } catch {
-        // Approach 3: Click on the specific option if it's already visible
-        const option = this.page.locator(`text="${permissionGroup}"`).first();
-        await option.click();
-      }
-    }
+    await this.waitForElement(this.permissionGroupSelect);
+    await this.permissionGroupSelect.selectOption({ label: permissionGroup });
   }
 
   /**
    * Selects the first available permission group
    */
   async selectFirstPermissionGroup(): Promise<void> {
-    await this.waitForElement(this.permissionGroupDropdown);
+    await this.waitForElement(this.permissionGroupSelect);
     
-    try {
-      // Try to click the first visible option
-      const firstOption = this.page.locator('[role="option"]').first().or(this.page.locator('li').first());
-      await firstOption.click();
-    } catch {
-      // If that fails, just ensure something is selected
-      console.log('Using default/pre-selected permission group');
-    }
+    // Select "Admin" as the first non-placeholder option
+    await this.permissionGroupSelect.selectOption({ label: 'Admin' });
   }
 
   /**
@@ -268,10 +243,11 @@ export class CreateUserPage extends BasePage {
   }
 
   /**
-   * Validates the instruction text is displayed
+   * Validates the form title is displayed
    */
-  async validateInstructionText(): Promise<void> {
-    await expect(this.instructionText).toBeVisible();
+  async validateFormTitle(): Promise<void> {
+    await expect(this.pageTitle).toBeVisible();
+    await expect(this.pageTitle).toHaveText(/create user/i);
   }
 
   /**
@@ -292,15 +268,17 @@ export class CreateUserPage extends BasePage {
     await expect(this.lastNameInput).toBeEnabled();
     await expect(this.emailInput).toBeVisible();
     await expect(this.emailInput).toBeEnabled();
-    await expect(this.contactNumberInput).toBeVisible();
-    await expect(this.contactNumberInput).toBeEnabled();
+    await expect(this.phoneNumberInput).toBeVisible();
+    await expect(this.phoneNumberInput).toBeEnabled();
+    await expect(this.countryCodeSelect).toBeVisible();
+    await expect(this.countryCodeSelect).toBeEnabled();
   }
 
   /**
    * Validates all account information fields are visible
    */
   async validateAccountInformationFields(): Promise<void> {
-    await expect(this.permissionGroupDropdown).toBeVisible();
+    await expect(this.permissionGroupSelect).toBeVisible();
     await expect(this.activeRadio).toBeVisible();
     await expect(this.blockedRadio).toBeVisible();
   }
@@ -337,7 +315,6 @@ export class CreateUserPage extends BasePage {
    */
   async validateCreateUserForm(): Promise<void> {
     await this.validatePageTitle();
-    await this.validateInstructionText();
     await this.validateFormSections();
     await this.validateBasicInformationFields();
     await this.validateAccountInformationFields();
@@ -369,7 +346,7 @@ export class CreateUserPage extends BasePage {
    * Gets the current value of contact number field
    */
   async getContactNumberValue(): Promise<string> {
-    return await this.contactNumberInput.inputValue();
+    return await this.phoneNumberInput.inputValue();
   }
 
   /**
@@ -379,7 +356,7 @@ export class CreateUserPage extends BasePage {
     await this.firstNameInput.clear();
     await this.lastNameInput.clear();
     await this.emailInput.clear();
-    await this.contactNumberInput.clear();
+    await this.phoneNumberInput.clear();
   }
 }
 

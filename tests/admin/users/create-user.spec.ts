@@ -63,8 +63,8 @@ test.describe('Admin - Create User', () => {
     await usersListPage.clickCreateUser();
     await createUserPage.waitForCreateUserPageLoad();
     
-    // Verify instruction text
-    await createUserPage.validateInstructionText();
+    // Verify page title
+    await createUserPage.validatePageTitle();
     
     // Verify required field indicators (asterisks)
     await createUserPage.validateRequiredFieldIndicators();
@@ -113,12 +113,12 @@ test.describe('Admin - Create User', () => {
     const usersListPage = createUsersListPage(page);
     const createUserPage = createCreateUserPage(page);
     
-    // Generate test data
+    // Generate test data with 10-digit phone number (without country code)
     const userData = generateUserData({
       firstName: 'Test',
       lastName: 'User',
       email: 'test.user@example.com',
-      contactNumber: '+639123456789'
+      contactNumber: '9123456789' // 10 digits starting with 9
     });
     
     // Navigate to Create User page
