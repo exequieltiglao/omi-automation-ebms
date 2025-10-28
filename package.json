@@ -9,9 +9,9 @@
     "test:ui": "playwright test --ui",
     "test:report": "playwright show-report",
     "test:debug": "playwright test --debug",
-    "test:chrome": "playwright test --project=chromium",
-    "test:firefox": "playwright test --project=firefox",
-    "test:webkit": "playwright test --project=webkit",
+    "test:chrome": "playwright test --project=chromium --workers=1",
+    "test:firefox": "playwright test --project=firefox --workers=1",
+    "test:webkit": "playwright test --project=webkit --workers=1",
     "install:browsers": "playwright install"
   },
   "keywords": [

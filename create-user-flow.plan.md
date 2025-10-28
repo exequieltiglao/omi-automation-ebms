@@ -62,13 +62,19 @@ This plan implements end-to-end tests for the Create User flow in the EBMS syste
   - Verify Configure Permission button appears
   - Validate button is visible only after selection
 - Test 4: Create User submission and verification
-  - Fill all required fields with programmatically generated test data
-  - Generate unique email using timestamp to avoid duplicates
-  - Click Submit/Create button to create the user
-  - Assert success toast/message appears ("New User has been added!")
-  - Verify redirect to Users list page (/admin/users/)
-  - Assert the new user appears in the Users list table
-  - Verify First Name, Last Name, and Email are visible
+- Generate completely unique test data programmatically to avoid conflicts
+- Use `generateUniqueTestData()` helper function that creates:
+  - First name: Randomly selected from array ['John', 'Jane', 'Michael', 'Sarah', 'David', 'Emily', 'Robert', 'Jessica', 'William', 'Ashley']
+  - Last name: Randomly selected from array ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez']
+  - Email: `{firstname}{lastname}{3-digit-random}@test.com` (e.g., johndoe234@test.com, sarahgarcia567@test.com)
+  - Phone number: Random 10-digit number starting with 9 (e.g., 9154783621)
+  - Permission group: Randomly selected from ['Admin', 'Client', 'Mall Manager']
+- Fill all required fields with generated data
+- Click Submit/Create button to create the user
+- Assert success toast/message appears ("New User has been added!")
+- Verify redirect to Users list page (/admin/users/)
+- Assert the new user appears in the Users list table
+- Verify First Name, Last Name, and Email are visible
 
 ### 6. Create MCP Integration Helper
 

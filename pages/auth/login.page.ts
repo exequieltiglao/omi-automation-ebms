@@ -23,10 +23,10 @@ export class LoginPage extends BasePage {
     
     // Initialize login page locators
     this.welcomeText = page.getByText(/welcome back!/i);
-    this.emailInput = page.getByTestId('email');
-    this.passwordInput = page.getByRole('textbox', { name: /password/i });
+    this.emailInput = page.getByLabel(/email/i);
+    this.passwordInput = page.getByLabel(/password/i);
     this.loginButton = page.getByRole('button', { name: /login/i });
-    this.submitButton = page.getByTestId('submit');
+    this.submitButton = page.getByRole('button', { name: /login|submit/i });
     this.forgotPasswordLink = page.getByRole('link', { name: /forgot password/i });
     this.rememberMeCheckbox = page.getByRole('checkbox', { name: /remember me/i });
     this.loginForm = page.locator('form').first();

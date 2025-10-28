@@ -20,7 +20,7 @@ export class UsersPage extends BasePage {
     this.pageTitle = page.getByRole('heading', { name: /users/i });
     this.createButton = page.getByRole('button', { name: /create/i });
     this.createDropdown = page.locator('[data-test="create-menu"], [data-testid="create-menu"]');
-    this.createUserOption = page.getByRole('menuitem', { name: /create user/i });
+    this.createUserOption = page.locator('a, button').filter({ hasText: /create user/i }).first();
     this.usersTable = page.getByRole('table', { name: /users/i });
     this.searchInput = page.getByRole('textbox', { name: /search/i });
   }
