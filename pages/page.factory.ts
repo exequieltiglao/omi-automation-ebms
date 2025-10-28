@@ -2,6 +2,8 @@ import { Page } from '@playwright/test';
 import { BasePage } from './base.page';
 import { LoginPage } from './auth/login.page';
 import { DashboardPage } from './dashboard/dashboard.page';
+import { UsersPage } from './users/users.page';
+import { CreateUserPage } from './users/create-user.page';
 
 /**
  * Page Factory Pattern
@@ -47,6 +49,24 @@ export class PageFactory {
    */
   static createDashboardPage(page: Page): DashboardPage {
     return this.createPage(DashboardPage, page);
+  }
+
+  /**
+   * Creates a UsersPage instance
+   * @param page - Playwright page object
+   * @returns UsersPage instance
+   */
+  static createUsersPage(page: Page): UsersPage {
+    return this.createPage(UsersPage, page);
+  }
+
+  /**
+   * Creates a CreateUserPage instance
+   * @param page - Playwright page object
+   * @returns CreateUserPage instance
+   */
+  static createCreateUserPage(page: Page): CreateUserPage {
+    return this.createPage(CreateUserPage, page);
   }
 
   /**
@@ -114,6 +134,24 @@ export function createLoginPage(page: Page): LoginPage {
  */
 export function createDashboardPage(page: Page): DashboardPage {
   return PageFactory.createDashboardPage(page);
+}
+
+/**
+ * Creates a UsersPage instance
+ * @param page - Playwright page object
+ * @returns UsersPage instance
+ */
+export function createUsersPage(page: Page): UsersPage {
+  return PageFactory.createUsersPage(page);
+}
+
+/**
+ * Creates a CreateUserPage instance
+ * @param page - Playwright page object
+ * @returns CreateUserPage instance
+ */
+export function createCreateUserPage(page: Page): CreateUserPage {
+  return PageFactory.createCreateUserPage(page);
 }
 
 /**
