@@ -10,12 +10,16 @@ export { BasePage } from './base.page';
 // Page objects
 export { LoginPage } from './auth/login.page';
 export { DashboardPage } from './dashboard/dashboard.page';
+export { UsersPage } from './users/users.page';
+export { CreateUserPage } from './users/create-user.page';
 
 // Page factory
 export { 
   PageFactory, 
   createLoginPage, 
-  createDashboardPage, 
+  createDashboardPage,
+  createUsersPage,
+  createCreateUserPage,
   createPageByUrl 
 } from './page.factory';
 

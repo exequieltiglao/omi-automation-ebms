@@ -7,6 +7,8 @@ export interface EnvironmentConfig {
   baseUrl: string;
   testEmail: string;
   testPassword: string;
+  adminEmail: string;
+  adminPassword: string;
   testTimeout: number;
   navigationTimeout: number;
   actionTimeout: number;
@@ -20,9 +22,11 @@ export interface EnvironmentConfig {
  */
 export function getEnvironmentConfig(): EnvironmentConfig {
   const requiredEnvVars = {
-    baseUrl: process.env.BASE_URL || 'https://omi-uat.smop.asia',
+    baseUrl: process.env.BASE_URL || 'http://52.76.90.136:8000',
     testEmail: process.env.TEST_EMAIL || 'productdevelopmentteam@smop.asia-uat',
     testPassword: process.env.TEST_PASSWORD || 'SM0P4ppDevUAT!',
+    adminEmail: process.env.ADMIN_EMAIL || 'admin@example.com',
+    adminPassword: process.env.ADMIN_PASSWORD || 'admin123',
     testTimeout: parseInt(process.env.TEST_TIMEOUT || '30000'),
     navigationTimeout: parseInt(process.env.NAVIGATION_TIMEOUT || '30000'),
     actionTimeout: parseInt(process.env.ACTION_TIMEOUT || '30000'),
@@ -50,9 +54,11 @@ export function getEnvironmentConfig(): EnvironmentConfig {
  * Used as fallback when environment variables are not set
  */
 export const defaultConfig: EnvironmentConfig = {
-  baseUrl: 'https://omi-uat.smop.asia',
+  baseUrl: 'http://52.76.90.136:8000',
   testEmail: 'productdevelopmentteam@smop.asia-uat',
   testPassword: 'SM0P4ppDevUAT!',
+  adminEmail: 'admin@example.com',
+  adminPassword: 'admin123',
   testTimeout: 30000,
   navigationTimeout: 30000,
   actionTimeout: 30000,

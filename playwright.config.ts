@@ -16,7 +16,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: process.env.BASE_URL || 'https://omi-uat.smop.asia',
+    baseURL: process.env.BASE_URL || 'http://52.76.90.136:8000',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',

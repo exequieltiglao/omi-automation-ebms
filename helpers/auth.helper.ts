@@ -31,13 +31,13 @@ export async function loginUser(page: Page, credentials?: LoginCredentials): Pro
   await expect(page.getByText(/welcome back!/i)).toBeVisible();
 
   // Fill in email field using data-test attribute
-  await page.getByTestId('email').fill(email);
+  await page.getByLabel(/email/i).fill(email);
 
   // Fill in password field
-  await page.getByRole('textbox', { name: /password/i }).fill(password);
+  await page.getByLabel(/password/i).fill(password);
 
   // Click login button
-  await page.getByTestId('submit').click();
+  await page.getByRole('button', { name: /login|submit/i }).click();
 
   // Wait for successful login using URL assertion
   await expect(page).toHaveURL(/\/$|dashboard|home|main/);

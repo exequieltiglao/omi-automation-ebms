@@ -13,6 +13,8 @@ Your task is to initialize a new automated testing project following industry be
 - Apply environment-based settings (e.g., baseURL, timeouts, retries).
 - Integrate reusable fixtures and helper functions for maintainability.
 - Add a few example tests (e.g., login, navigation, or smoke tests) that demonstrate your rules.
+- Use the Playwright MCP Server to navigate to the website. Ensure that the MCP Server is actively handling the browser automation to validate its integration. Do not simulate the tests statically or bypass the MCP Server. All interactions must be routed through MCP.
+
 
 **Coding and Testing Rules**
 - Use descriptive and meaningful test names that clearly describe the expected behavior.
