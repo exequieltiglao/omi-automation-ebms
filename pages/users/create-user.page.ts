@@ -39,7 +39,8 @@ export class CreateUserPage extends BasePage {
     this.firstNameInput = page.getByLabel(/first name/i);
     this.lastNameInput = page.getByLabel(/last name/i);
     this.emailInput = page.getByLabel(/email address/i);
-    this.contactNumberInput = page.locator('#phone_number');
+    this.contactNumberInput = page.locator('#input-contact-number');
+
     
     // Account Information locators
     this.permissionGroupSelect = page.getByLabel(/permission group/i);
@@ -168,7 +169,15 @@ export class CreateUserPage extends BasePage {
   async selectPermissionGroup(permissionGroup: string): Promise<void> {
     await expect(this.permissionGroupSelect).toBeVisible();
     // Default to "Admin" (value="1") for now, will enhance later
-    await this.permissionGroupSelect.selectOption('1');
+    // await this.permissionGroupSelect.selectOption('1');
+
+      // Wait for dropdown to be ready
+  // Select by visible label (e.g., 'Mall Manager')
+  await this.permissionGroupSelect.selectOption({ label: permissionGroup });
+
+  // Optional: verify correct selection
+  const selected = await this.permissionGroupSelect.inputValue();
+  expect(selected).not.toBe('');
   }
 
   /**
