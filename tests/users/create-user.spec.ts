@@ -33,7 +33,10 @@ function generateUniqueTestData() {
   const randomPhone = Math.floor(9000000000 + Math.random() * 999999999).toString();
   
   // Default to "Admin" for now (value="1"), will enhance later
-  const permissionGroup = 'Admin';
+  const permissionGroups = ['Admin', 'Mall Manager', 'Client'];
+
+  const randomGroup = permissionGroups[Math.floor(Math.random() * permissionGroups.length)];
+
   
   // Pick a random domain
   const domain = emailDomains[Math.floor(Math.random() * emailDomains.length)];
@@ -46,7 +49,7 @@ function generateUniqueTestData() {
     lastName,
     email,
     contactNumber: randomPhone,
-    permissionGroup
+    permissionGroup: randomGroup
   };
 }
 
