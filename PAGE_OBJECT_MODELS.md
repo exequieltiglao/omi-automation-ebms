@@ -1,5 +1,68 @@
 # Page Object Models (POM) Documentation
 
+Quick Start (Beginner-Friendly)
+--------------------------------
+- A Page Object is a small class that wraps locators and actions for one page.
+- Use role/label/text locators; avoid brittle CSS/XPath.
+- Keep methods short (fill, click, validate). Add one composite method if helpful.
+
+Minimal example (Login):
+```typescript
+// pages/auth/login.page.ts
+import { Page, Locator, expect } from '@playwright/test';
+import { BasePage } from '../base.page';
+
+export class LoginPage extends BasePage {
+  private readonly email: Locator;
+  private readonly password: Locator;
+  private readonly submit: Locator;
+
+  constructor(page: Page) {
+    super(page);
+    this.email = page.getByLabel(/email/i);
+    this.password = page.getByLabel(/password/i);
+    this.submit = page.getByRole('button', { name: /login|submit/i });
+  }
+
+  async goto() { await this.navigateTo('/login'); }
+  async login({ email, password }: { email: string; password: string; }) {
+    await this.email.fill(email);
+    await this.password.fill(password);
+    await this.submit.click();
+    await expect(this.page).toHaveURL(/dashboard|admin/);
+  }
+}
+```
+
+Use in a test:
+```typescript
+import { test } from '@playwright/test';
+import { createLoginPage } from '@pages';
+
+test('login works', async ({ page }) => {
+  const login = createLoginPage(page);
+  await login.goto();
+  await login.login({ email: 'user@test.com', password: 'pass' });
+});
+```
+
+Users/Create User examples:
+```typescript
+// pages/users/users.page.ts (snippet)
+export class UsersPage extends BasePage {
+  private readonly createBtn = this.page.getByRole('button', { name: /create/i });
+  async goto() { await this.navigateTo('/admin/users/'); }
+  async navigateToCreateUser() {
+    await this.createBtn.click();
+    await this.page.getByRole('link', { name: /create user/i }).click();
+  }
+}
+```
+
+Tips:
+- Prefer getByRole/getByLabel/getByText; avoid fixed waits.
+- Reuse locators; keep methods focused; validations use `expect`.
+
 ## 📖 Table of Contents
 
 1. [Introduction](#introduction)
