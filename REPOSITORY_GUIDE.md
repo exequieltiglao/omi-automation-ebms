@@ -1,5 +1,49 @@
 # EBMS Automation Repository - Complete Guide
 
+Quick Start (Beginner-Friendly)
+-------------------------------
+1) Install and run:
+```bash
+npm install
+npm run install:browsers
+npx playwright test --ui
+```
+
+2) Where to add things:
+```
+config/   # env + timeouts
+pages/    # Page Objects (POM)
+fixtures/ # Setup/teardown (auth, page-object)
+helpers/  # Utilities (auth, navigation, mcp)
+tests/    # *.spec.ts files
+```
+
+3) Small example (Create User):
+```typescript
+import { test, expect } from '@playwright/test';
+import { createUsersPage, createCreateUserPage } from '@pages';
+
+test('Create User E2E', async ({ page }) => {
+  const users = createUsersPage(page);
+  await users.goto();
+  await users.navigateToCreateUser();
+
+  const create = createCreateUserPage(page);
+  await create.fillFirstName('Sarah');
+  await create.fillLastName('Garcia');
+  await create.fillEmail('sarah.garcia+' + Date.now() + '@example.com');
+  await create.selectPermissionGroup('1'); // Admin
+  await create.clickSubmit();
+
+  await expect(page.getByText(/added|created|success/i)).toBeVisible();
+});
+```
+
+4) Tips:
+- Prefer role/label/text locators
+- Avoid fixed waits; use web‑first `expect`
+- Keep tests isolated using fixtures
+
 ## 📚 Table of Contents
 
 1. [Repository Overview](#repository-overview)
